@@ -9,6 +9,7 @@ pipeline {
                         ls
                         pwd
                         echo ${BUILD_NUMBER}
+                        docker images
                         echo "END STAGE: Initialize"
                     '''
                 }
