@@ -1,0 +1,19 @@
+pipeline {
+    agent any
+    stages {
+        stage('Initialize Build') {
+            steps {
+                dir("${WORKSPACE}"){
+                    sh '''
+                        echo "BEGIN STAGE: Initialize"
+                        ls
+                        pwd
+                        echo ${BUILD_NUMBER}
+                        echo "END STAGE: Initialize"
+                    '''
+                }
+                
+            }
+        }
+    }
+}
