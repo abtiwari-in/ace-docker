@@ -1,22 +1,57 @@
 pipeline {
-    agent none
+    agent any
     stages {
-        stage('Initialize Build') {
-            agent {
-                label 'docker-agent'
-            }
+        stage('Initialization') {
+           agent {
+               label 'docker-agent'
+           }
             steps {
-                dir("${WORKSPACE}"){
+                script {
                     sh '''
-                        echo "BEGIN STAGE: Initialize"
                         ls
-                        pwd
-                        echo ${BUILD_NUMBER}
-                        docker images
-                        echo "END STAGE: Initialize"
+                        cd sample
+                        docker build -t aceapp6 --file Dockerfile.aceonly .
+                        docker images | grep aceapp6
+                        '''
+                }
+            }
+        }
+        stage('Initialization') {
+           agent any
+            steps {
+                script {
+                    sh '''
+                        /usr/local/bin/oc login -u admin -p admin https://inquiry1.fyre.ibm.com:8443 --insecure-skip-tls-verify
+                        oc project test
+                        oc get is
+                        oc registry info
                     '''
                 }
-                
+            }
+        }
+        stage('docker upload') {
+            agent {
+               label 'docker-agent'
+            }
+            steps {
+                script {
+                    sh '''
+                        docker login -p ey1hXQLMaYP22ZPAM0t8abFvdY0LvT1L3mzLiPR54hQ -u admin docker-registry.default.svc:5000
+                        docker tag aceapp6 docker-registry.default.svc:5000/test/aceapp6
+                        docker push docker-registry.default.svc:5000/test/aceapp6
+                    '''
+                }
+            }
+        }
+        stage('Build App') {
+           agent any
+            steps {
+                script {
+                    sh '''
+                        /usr/local/bin/oc new-app -e LICENSE=accept -e ACE_SERVER_NAME=ACESERVER6 -e ACE_TRUSTSTORE_PASSWORD=truststorepwd -e ACE_KEYSTORE_PASSWORD=keystorepwd --image-stream=test/aceapp6:latest --insecure-registry
+                        oc expose svc/aceapp6
+                    '''
+                }
             }
         }
     }
