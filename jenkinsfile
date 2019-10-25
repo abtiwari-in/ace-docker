@@ -30,7 +30,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        echo $OC_TOKEN
+                        echo ${OC_TOKEN}
                         #docker login -p ${OC_TOKEN} -u admin $OC_REGISTRY
                     '''
                 }
