@@ -1,3 +1,5 @@
+def OC_TOKEN = 'UNKNOWN'
+
 pipeline {
     agent any    
     environment {
@@ -34,6 +36,7 @@ pipeline {
                         oc get is
                         oc registry info
                     '''
+                    OC_TOKEN = sh(returnStdout: true, script: 'oc whoam -t')
                 }
             }
         }
@@ -44,7 +47,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        docker login -p _YSzrI0FgvOTNL0NPnaKAyExkKDH8K25HI_b1LghwnY -u admin $OC_REGISTRY
+                        docker login -p ${OC_TOKEN} -u admin $OC_REGISTRY
                         docker tag $IMAGE_NAME $OC_REGISTRY/$OC_PROJECT/$IMAGE_NAME
                         docker push $OC_REGISTRY/$OC_PROJECT/$IMAGE_NAME
                     '''
