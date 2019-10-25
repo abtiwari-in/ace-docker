@@ -1,5 +1,9 @@
 pipeline {
-    agent any
+    agent any    
+    environment {
+        IMAGE_NAME = 'aceapp6'
+        
+    }    
     stages {
         stage('Build Docker image for Bar file') {
            agent {
@@ -10,8 +14,8 @@ pipeline {
                     sh '''
                         ls
                         cd sample
-                        docker build -t aceapp6 --file Dockerfile.aceonly .
-                        docker images | grep aceapp6
+                        docker build -t $IMAGE_NAME --file Dockerfile.aceonly .
+                        docker images | grep $IMAGE_NAME
                         '''
                 }
             }
@@ -37,8 +41,8 @@ pipeline {
                 script {
                     sh '''
                         docker login -p ey1hXQLMaYP22ZPAM0t8abFvdY0LvT1L3mzLiPR54hQ -u admin docker-registry.default.svc:5000
-                        docker tag aceapp6 docker-registry.default.svc:5000/test/aceapp6
-                        docker push docker-registry.default.svc:5000/test/aceapp6
+                        docker tag $IMAGE_NAME docker-registry.default.svc:5000/test/$IMAGE_NAME
+                        docker push docker-registry.default.svc:5000/test/$IMAGE_NAME
                     '''
                 }
             }
@@ -48,8 +52,8 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        /usr/local/bin/oc new-app -e LICENSE=accept -e ACE_SERVER_NAME=ACESERVER6 -e ACE_TRUSTSTORE_PASSWORD=truststorepwd -e ACE_KEYSTORE_PASSWORD=keystorepwd --image-stream=test/aceapp6:latest --insecure-registry
-                        oc expose svc/aceapp6
+                        /usr/local/bin/oc new-app -e LICENSE=accept -e ACE_SERVER_NAME=ACESERVER6 -e ACE_TRUSTSTORE_PASSWORD=truststorepwd -e ACE_KEYSTORE_PASSWORD=keystorepwd --image-stream=test/$IMAGE_NAME:latest --insecure-registry
+                        oc expose svc/$IMAGE_NAME
                     '''
                 }
             }
