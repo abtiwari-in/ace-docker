@@ -40,7 +40,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        docker login -p ey1hXQLMaYP22ZPAM0t8abFvdY0LvT1L3mzLiPR54hQ -u admin docker-registry.default.svc:5000
+                        docker login -p _YSzrI0FgvOTNL0NPnaKAyExkKDH8K25HI_b1LghwnY -u admin docker-registry.default.svc:5000
                         docker tag $IMAGE_NAME docker-registry.default.svc:5000/test/$IMAGE_NAME
                         docker push docker-registry.default.svc:5000/test/$IMAGE_NAME
                     '''
