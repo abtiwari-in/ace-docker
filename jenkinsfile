@@ -2,7 +2,11 @@ pipeline {
     agent any    
     environment {
         IMAGE_NAME = 'aceapp6'
-        
+        OC_USER = 'admin'
+        OC_PASSWORD = 'admin'
+        OC_URL = 'https://inquiry1.fyre.ibm.com:8443'
+        OC_PROJECT = 'test'
+        OC_REGISTRY = 'docker-registry.default.svc:5000'
     }    
     stages {
         stage('Build Docker image for Bar file') {
@@ -25,8 +29,8 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        /usr/local/bin/oc login -u admin -p admin https://inquiry1.fyre.ibm.com:8443 --insecure-skip-tls-verify
-                        oc project test
+                        /usr/local/bin/oc login -u $OC_USER -p $OC_PASSWORD $OC_URL --insecure-skip-tls-verify
+                        oc project $OC_PROJECT
                         oc get is
                         oc registry info
                     '''
@@ -40,9 +44,9 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        docker login -p _YSzrI0FgvOTNL0NPnaKAyExkKDH8K25HI_b1LghwnY -u admin docker-registry.default.svc:5000
-                        docker tag $IMAGE_NAME docker-registry.default.svc:5000/test/$IMAGE_NAME
-                        docker push docker-registry.default.svc:5000/test/$IMAGE_NAME
+                        docker login -p _YSzrI0FgvOTNL0NPnaKAyExkKDH8K25HI_b1LghwnY -u admin $OC_REGISTRY
+                        docker tag $IMAGE_NAME $OC_REGISTRY/$OC_PROJECT/$IMAGE_NAME
+                        docker push $OC_REGISTRY/$OC_PROJECT/$IMAGE_NAME
                     '''
                 }
             }
@@ -52,7 +56,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        /usr/local/bin/oc new-app -e LICENSE=accept -e ACE_SERVER_NAME=ACESERVER6 -e ACE_TRUSTSTORE_PASSWORD=truststorepwd -e ACE_KEYSTORE_PASSWORD=keystorepwd --image-stream=test/$IMAGE_NAME:latest --insecure-registry
+                        /usr/local/bin/oc new-app -e LICENSE=accept -e ACE_SERVER_NAME=ACESERVER6 -e ACE_TRUSTSTORE_PASSWORD=truststorepwd -e ACE_KEYSTORE_PASSWORD=keystorepwd --image-stream=$OC_PROJECT/$IMAGE_NAME:latest --insecure-registry
                         oc expose svc/$IMAGE_NAME
                     '''
                 }
