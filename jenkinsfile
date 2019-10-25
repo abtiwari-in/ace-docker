@@ -36,7 +36,7 @@ pipeline {
                         oc get is
                         oc registry info
                     '''
-                    OC_TOKEN = sh(returnStdout: true, script: 'oc whoam -t')
+                    OC_TOKEN = sh(returnStdout: true, script: 'oc whoami -t')
                 }
             }
         }
