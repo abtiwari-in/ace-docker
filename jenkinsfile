@@ -47,7 +47,7 @@ pipeline {
                 script {
                    
                    sh """
-                        docker login $OC_REGISTRY -u admin -p $OC_TOKEN
+                        docker login  -u admin -p `echo -n $OC_TOKEN` $OC_REGISTRY
                         docker tag $IMAGE_NAME $OC_REGISTRY/$OC_PROJECT/$IMAGE_NAME
                         docker push $OC_REGISTRY/$OC_PROJECT/$IMAGE_NAME
                     """
