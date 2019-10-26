@@ -1,4 +1,5 @@
 def OC_TOKEN
+def OC_REGISTRY
 pipeline {
     agent any    
     environment {
@@ -7,7 +8,6 @@ pipeline {
         OC_PASSWORD = 'admin'
         OC_URL = 'https://inquiry1.fyre.ibm.com:8443'
         OC_PROJECT = 'test'
-        OC_REGISTRY = 'docker-registry.default.svc:5000'
     }    
     stages {
         stage('Build Docker image for Bar file') {
@@ -32,10 +32,9 @@ pipeline {
                     sh """
                         /usr/local/bin/oc login -u $OC_USER -p $OC_PASSWORD $OC_URL --insecure-skip-tls-verify
                         oc project $OC_PROJECT
-                        oc get is
-                        oc registry info
                     """
                     OC_TOKEN = sh(script: 'oc whoami -t', returnStdout: true)
+                    OC_REGISTRY = sh(script: 'oc registry info', returnStdout: true)
                 }
             }
         }
@@ -47,9 +46,9 @@ pipeline {
                 script {
                    
                    sh """
-                        docker login  -u admin -p `echo -n $OC_TOKEN` $OC_REGISTRY
-                        docker tag $IMAGE_NAME $OC_REGISTRY/$OC_PROJECT/$IMAGE_NAME
-                        docker push $OC_REGISTRY/$OC_PROJECT/$IMAGE_NAME
+                        docker login  -u admin -p `echo -n $OC_TOKEN` ${OC_REGISTRY}
+                        docker tag $IMAGE_NAME ${OC_REGISTRY}/$OC_PROJECT/$IMAGE_NAME
+                        docker push ${OC_REGISTRY}/$OC_PROJECT/$IMAGE_NAME
                     """
                 }
             }
