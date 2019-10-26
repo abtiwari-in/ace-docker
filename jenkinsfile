@@ -61,7 +61,7 @@ pipeline {
                     sh """
                         /usr/local/bin/oc new-app -e LICENSE=accept -e ACE_SERVER_NAME=ACESERVER6 -e ACE_TRUSTSTORE_PASSWORD=truststorepwd -e ACE_KEYSTORE_PASSWORD=keystorepwd --image-stream=$OC_PROJECT/$IMAGE_NAME:latest --insecure-registry
                         oc expose svc/$IMAGE_NAME
-                        oc expose svc/$IMAGE_NAME --name=$IMAGE_NAMEwebui --hostname=$IMAGE_NAMEwebui-test.router.default.svc.cluster.local --port=7800
+                        oc expose svc/$IMAGE_NAME --name=${IMAGE_NAME}webui --hostname=${IMAGE_NAME}webui-test.router.default.svc.cluster.local --port=7800
                     """
                 }
             }
