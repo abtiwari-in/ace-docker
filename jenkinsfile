@@ -29,12 +29,12 @@ pipeline {
            agent any
             steps {
                 script {
-                    sh '''
+                    sh """
                         /usr/local/bin/oc login -u $OC_USER -p $OC_PASSWORD $OC_URL --insecure-skip-tls-verify
                         oc project $OC_PROJECT
                         oc get is
                         oc registry info
-                    '''
+                    """
                     OC_TOKEN = sh(script: 'oc whoami -t', returnStdout: true)
                 }
             }
@@ -58,10 +58,11 @@ pipeline {
            agent any
             steps {
                 script {
-                    sh '''
+                    sh """
                         /usr/local/bin/oc new-app -e LICENSE=accept -e ACE_SERVER_NAME=ACESERVER6 -e ACE_TRUSTSTORE_PASSWORD=truststorepwd -e ACE_KEYSTORE_PASSWORD=keystorepwd --image-stream=$OC_PROJECT/$IMAGE_NAME:latest --insecure-registry
                         oc expose svc/$IMAGE_NAME
-                    '''
+                        oc expose svc/$IMAGE_NAME --name=$IMAGE_NAMEwebui --hostname=$IMAGE_NAMEwebui-test.router.default.svc.cluster.local --port=7800
+                    """
                 }
             }
         }
