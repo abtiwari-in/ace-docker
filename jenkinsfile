@@ -34,7 +34,7 @@ pipeline {
                         oc project $OC_PROJECT
                     """
                     OC_TOKEN = sh(script: 'oc whoami -t', returnStdout: true)
-                    OC_REGISTRY = sh(script: 'oc registry info', returnStdout: true)
+                    OC_REGISTRY = sh(script: 'echo -n $(oc registry info)', returnStdout: true)
                 }
             }
         }
