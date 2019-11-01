@@ -10,18 +10,6 @@ pipeline {
         OC_PROJECT = 'test'
     }    
     stages {
-        stage('Download ACE BAR File from Git') {
-            steps {
-                dir("${WORKSPACE}/samples/ace_bars_only"){
-                sh ''' 
-                    echo "BEGIN STAGE: Download ACE Bar File"
-                    #ADD SHELL COMMANDS HERE TO CLEAN UP THE SAMPLES FOLDER
-                    python raw_file_download_from_git.py
-                    echo "END STAGE: Download ACE Bar File"
-                    '''
-                }
-            }
-        }
         stage('Build Docker image for Bar file') {
            agent {
                label 'docker-agent'
