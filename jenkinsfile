@@ -17,7 +17,7 @@ pipeline {
                         pwd
                         ls
                         mkdir ../${BUILD_NUMBER}
-                        cp -R ./* ../${BUILD_NUMBER}
+                        cp -R ./* ../${BUILD_NUMBER}/
                         mv ../${BUILD_NUMBER} ./${BUILD_NUMBER}
                         cd ${BUILD_NUMBER}/sample/bars_aceonly/
                         
@@ -52,12 +52,12 @@ pipeline {
                label 'docker-agent'
            }
             steps {
-                script {
+                dir("${WORKSPACE}"){ 
                     sh '''
                         ls
                         pwd
-                        ls ./sample/bars_aceonly
                         cd ${BUILD_NUMBER}/sample
+                        ls
                         docker build -t $IMAGE_NAME:${BUILD_NUMBER} --file Dockerfile.aceonly .
                         docker images | grep $IMAGE_NAME
                         '''
