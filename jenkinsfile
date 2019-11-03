@@ -40,7 +40,7 @@ pipeline {
                 } 
             } 
         }
-/*        stage('Build Docker image for Bar file') {
+        stage('Build Docker image for Bar file') {
            agent {
                label 'docker-agent'
            }
@@ -94,6 +94,6 @@ pipeline {
                     """
                 }
             }
-        }*/
+        }
     }
 }
