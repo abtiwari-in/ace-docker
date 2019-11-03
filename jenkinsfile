@@ -33,6 +33,8 @@ pipeline {
                         ls
                         echo "BEGIN STAGE: Download ACE Bar File" 
                         python raw_file_download_from_git.py 
+                        cd sample/bars_aceonly
+                        ls 
                         echo "END STAGE: Download ACE Bar File" 
                     ''' 
                 } 
