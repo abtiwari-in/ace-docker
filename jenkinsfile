@@ -3,7 +3,7 @@ def OC_REGISTRY
 pipeline {
     agent any    
     environment {
-        IMAGE_NAME = $barfilename
+        IMAGE_NAME = 'accounts'
         OC_USER = 'admin'
         OC_PASSWORD = 'admin'
         OC_URL = 'https://inquiry1.fyre.ibm.com:8443'
