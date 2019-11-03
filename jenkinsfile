@@ -18,6 +18,8 @@ pipeline {
                         ls
                         echo "BEGIN STAGE: Download ACE Bar File" 
                         #ADD SHELL COMMANDS HERE TO CLEAN UP THE SAMPLES FOLDER
+                        rm -rf *.bar
+                        ls
                         #python raw_file_download_from_git.py 
                         echo "END STAGE: Download ACE Bar File" 
                     ''' 
