@@ -51,8 +51,8 @@ def shcmd(cmd, ignore_error=False):
 def download_file_from_git(gitlab_base_url, gitlab_proj_id, gitlab_branch, gitlab_priv_token, file_path_to_download, filename_to_download, local_target_dir):
     print("in download_file_from_git : local_target_dir = ",local_target_dir)
     curl_auth_header = "'PRIVATE-TOKEN: " + gitlab_priv_token + "'"
-#    cmd = "curl -H " + curl_auth_header + " -L " + gitlab_base_url + gitlab_proj_id + "/repository/files/" + file_path_to_download + "%2F"+ filename_to_download + "%2Eyaml/raw?ref=" + gitlab_branch + " > " + local_target_dir + "/" + filename_to_download + ".yaml"
-	cmd = "curl -s https://" + gitlab_priv_token + "@" + gitlab_base_url + "/" + gitlab_proj_id + "/" + gitlab_branch + "/" + file_path_to_download + "/" + filename_to_download + ".bar" +  " > " + local_target_dir + "/" + filename_to_download + ".bar"
+    #cmd = "curl -H " + curl_auth_header + " -L " + gitlab_base_url + gitlab_proj_id + "/repository/files/" + file_path_to_download + "%2F"+ filename_to_download + "%2Eyaml/raw?ref=" + gitlab_branch + " > " + local_target_dir + "/" + filename_to_download + ".yaml"
+    cmd = "curl -s https://" + gitlab_priv_token + "@" + gitlab_base_url + "/" + gitlab_proj_id + "/" + gitlab_branch + "/" + file_path_to_download + "/" + filename_to_download + ".bar" +  " > " + local_target_dir + "/" + filename_to_download + ".bar"
     print("my command: ", cmd)
     if not os.path.isdir(local_target_dir):
         os.makedirs(local_target_dir)
