@@ -17,7 +17,7 @@ pipeline {
                         pwd
                         ls
                         mkdir ../${BUILD_NUMBER}
-                        cp -R ./* ..//
+                        cp -R ./* ../${BUILD_NUMBER}
                         mv ../${BUILD_NUMBER} ./${BUILD_NUMBER}
                         cd ${BUILD_NUMBER}
                         ls
