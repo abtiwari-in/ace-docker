@@ -10,7 +10,7 @@ pipeline {
         OC_PROJECT = 'test'
     }    
     stages {
-        stage('Bar file Cleanup') { 
+       /* stage('Bar file Cleanup') { 
             steps { 
                 dir("${WORKSPACE}/sample/bars_aceonly"){ 
                     sh ''' 
@@ -39,7 +39,7 @@ pipeline {
                     ''' 
                 } 
             } 
-        }
+        }*/
         stage('Build Docker image for Bar file') {
            agent {
                label 'docker-agent'
