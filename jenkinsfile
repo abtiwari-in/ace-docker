@@ -33,8 +33,9 @@ pipeline {
         }
         stage('Download bar from git') { 
             steps { 
-                dir("${WORKSPACE}"/"${BUILD_NUMBER}"){ 
+                dir("${WORKSPACE}"){ 
                     sh ''' 
+                        cd ${BUILD_NUMBER}
                         pwd
                         ls
                         echo "BEGIN STAGE: Download ACE Bar File" 
