@@ -11,6 +11,9 @@ pipeline {
     }    
     stages {
         stage('Bar file Cleanup') { 
+            agent {
+               label 'docker-agent'
+            }            
             steps { 
                 dir("${WORKSPACE}"){ 
                     sh ''' 
@@ -32,6 +35,9 @@ pipeline {
             } 
         }
         stage('Download bar from git') { 
+            agent {
+               label 'docker-agent'
+            }            
             steps { 
                 dir("${WORKSPACE}"){ 
                     sh ''' 
