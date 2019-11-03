@@ -10,13 +10,19 @@ pipeline {
         OC_PROJECT = 'test'
     }    
     stages {
-       /* stage('Bar file Cleanup') { 
+        stage('Bar file Cleanup') { 
             steps { 
-                dir("${WORKSPACE}/sample/bars_aceonly"){ 
+                dir("${WORKSPACE}"){ 
                     sh ''' 
                         pwd
                         ls
+                        mkdir ../${BUILD_NUMBER}
+                        cp -R ./* ..//
+                        mv ../${BUILD_NUMBER} ./
+                        cd ${BUILD_NUMBER}/sample/bars_aceonly/
+                        
                         echo "BEGIN STAGE: Bar file Cleanup" 
+                        
                         #ADD SHELL COMMANDS HERE TO CLEAN UP THE SAMPLES FOLDER
                         rm -rf *.bar
                         ls
@@ -27,7 +33,7 @@ pipeline {
         }
         stage('Download bar from git') { 
             steps { 
-                dir("${WORKSPACE}"){ 
+                dir("${WORKSPACE}"/"${BUILD_NUMBER}"){ 
                     sh ''' 
                         pwd
                         ls
@@ -39,8 +45,8 @@ pipeline {
                     ''' 
                 } 
             } 
-        }*/
-        stage('Build Docker image for Bar file') {
+        }
+      /*  stage('Build Docker image for Bar file') {
            agent {
                label 'docker-agent'
            }
@@ -94,6 +100,6 @@ pipeline {
                     """
                 }
             }
-        }
+        }*/
     }
 }
