@@ -1,7 +1,8 @@
 def OC_TOKEN
 def OC_REGISTRY
 pipeline {
-    agent any    
+    agent any
+    options { skipDefaultCheckout() }
     environment {
         IMAGE_NAME = 'accounts'
         OC_USER = 'admin'
@@ -15,6 +16,7 @@ pipeline {
                label 'docker-agent'
             }            
             steps { 
+                checkout scm
                 dir("${WORKSPACE}"){ 
                     sh ''' 
                         pwd
