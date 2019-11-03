@@ -55,7 +55,7 @@ pipeline {
                 script {
                     sh '''
                         ls
-                        cd sample
+                        cd ${BUILD_NUMBER}/sample
                         docker build -t $IMAGE_NAME:${BUILD_NUMBER} --file Dockerfile.aceonly .
                         docker images | grep $IMAGE_NAME
                         '''
