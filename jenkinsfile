@@ -10,17 +10,29 @@ pipeline {
         OC_PROJECT = 'test'
     }    
     stages {
-        stage('Download ACE BAR File from Git') { 
+        stage('Bar file Cleanup') { 
             steps { 
                 dir("${WORKSPACE}/sample/bars_aceonly"){ 
                     sh ''' 
                         pwd
                         ls
-                        echo "BEGIN STAGE: Download ACE Bar File" 
+                        echo "BEGIN STAGE: Bar file Cleanup" 
                         #ADD SHELL COMMANDS HERE TO CLEAN UP THE SAMPLES FOLDER
                         rm -rf *.bar
                         ls
-                        #python raw_file_download_from_git.py 
+                        echo "END STAGE: Bar file Cleanup" 
+                    ''' 
+                } 
+            } 
+        }
+        stage('Download bar from git') { 
+            steps { 
+                dir("${WORKSPACE}"){ 
+                    sh ''' 
+                        pwd
+                        ls
+                        echo "BEGIN STAGE: Download ACE Bar File" 
+                        python raw_file_download_from_git.py 
                         echo "END STAGE: Download ACE Bar File" 
                     ''' 
                 } 
