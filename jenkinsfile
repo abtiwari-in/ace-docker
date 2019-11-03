@@ -19,10 +19,11 @@ pipeline {
                     sh ''' 
                         pwd
                         ls
-                        mkdir ../${BUILD_NUMBER}
-                        cp -R ./* ../${BUILD_NUMBER}/
-                        mv ../${BUILD_NUMBER} ./${BUILD_NUMBER}
-                        cd ${BUILD_NUMBER}/sample/bars_aceonly/
+                        #mkdir ../${BUILD_NUMBER}
+                        #cp -R ./* ../${BUILD_NUMBER}/
+                        #mv ../${BUILD_NUMBER} ./${BUILD_NUMBER}
+                        #cd ${BUILD_NUMBER}/sample/bars_aceonly/
+                        cd sample/bars_aceonly/
                         
                         echo "BEGIN STAGE: Bar file Cleanup" 
                         
@@ -41,7 +42,7 @@ pipeline {
             steps { 
                 dir("${WORKSPACE}"){ 
                     sh ''' 
-                        cd ${BUILD_NUMBER}
+                        #cd ${BUILD_NUMBER}
                         pwd
                         ls
                         echo "BEGIN STAGE: Download ACE Bar File" 
@@ -62,7 +63,8 @@ pipeline {
                     sh '''
                         ls
                         pwd
-                        cd ${BUILD_NUMBER}/sample
+                        #cd ${BUILD_NUMBER}/sample
+                        cd sample
                         ls
                         docker build -t $IMAGE_NAME:${BUILD_NUMBER} --file Dockerfile.aceonly .
                         docker images | grep $IMAGE_NAME
