@@ -19,6 +19,8 @@ pipeline {
                         mkdir ../${BUILD_NUMBER}
                         cp -R ./* ..//
                         mv ../${BUILD_NUMBER} ./
+                        cd ${BUILD_NUMBER}
+                        ls
                         cd ${BUILD_NUMBER}/sample/bars_aceonly/
                         
                         echo "BEGIN STAGE: Bar file Cleanup" 
