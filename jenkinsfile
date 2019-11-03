@@ -31,11 +31,24 @@ pipeline {
                         rm -rf *.bar
                         ls
                         echo "END STAGE: Bar file Cleanup" 
+                        
+                        echo "BEGIN STAGE: Download ACE Bar File" 
+                        cd ../..
+                        python raw_file_download_from_git.py 
+                        cd sample/bars_aceonly
+                        ls 
+                        echo "END STAGE: Download ACE Bar File"
+                        echo "BEGIN STAGE: Docker Image Build"
+                        cd ..
+                        ls
+                        docker build -t $IMAGE_NAME:${BUILD_NUMBER} --file Dockerfile.aceonly .
+                        docker images | grep $IMAGE_NAME
+                        echo "END STAGE: Docker Image Build"
                     ''' 
                 } 
             } 
         }
-        stage('Download bar from git') { 
+  /*      stage('Download bar from git') { 
             agent {
                label 'docker-agent'
             }            
@@ -71,7 +84,7 @@ pipeline {
                         '''
                 }
             }
-        }
+        }*/
         stage('Initialization') {
            agent any
             steps {
