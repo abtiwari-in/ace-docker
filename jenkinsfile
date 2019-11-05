@@ -4,7 +4,7 @@ pipeline {
     agent any
     options { skipDefaultCheckout() }
     environment {
-        IMAGE_NAME = 'accounts'
+        IMAGE_NAME = 'payments'
         OC_USER = 'admin'
         OC_PASSWORD = 'admin'
         OC_URL = 'https://inquiry1.fyre.ibm.com:8443'
@@ -95,7 +95,7 @@ pipeline {
                         /usr/local/bin/oc login -u $OC_USER -p $OC_PASSWORD $OC_URL --insecure-skip-tls-verify
                         oc project $OC_PROJECT
                         oc delete all --selector app=$IMAGE_NAME
-                        oc delete is $IMAGE_NAME
+                        #oc delete is $IMAGE_NAME
                     """
                     OC_TOKEN = sh(script: 'oc whoami -t', returnStdout: true)
                     OC_REGISTRY = sh(script: 'echo -n $(oc registry info)', returnStdout: true)
@@ -123,8 +123,8 @@ pipeline {
                 script {
                     sh """
                         /usr/local/bin/oc new-app -e LICENSE=accept -e ACE_SERVER_NAME=ACESERVER6 -e ACE_TRUSTSTORE_PASSWORD=truststorepwd -e ACE_KEYSTORE_PASSWORD=keystorepwd --image-stream=$OC_PROJECT/$IMAGE_NAME:${BUILD_NUMBER} --insecure-registry
-                        oc expose svc/$IMAGE_NAME
-                        oc expose svc/$IMAGE_NAME --name=${IMAGE_NAME}webui --hostname=${IMAGE_NAME}webui-test.router.default.svc.cluster.local --port=7800
+                        oc expose svc/$IMAGE_NAME --name=${IMAGE_NAME}webui --hostname=${IMAGE_NAME}webui-test.router.default.svc.cluster.local --port=7600
+                        oc expose svc/$IMAGE_NAME --name=${IMAGE_NAME}http --hostname=${IMAGE_NAME}http-test.router.default.svc.cluster.local --port=7800
                     """
                 }
             }
