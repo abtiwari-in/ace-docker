@@ -94,6 +94,8 @@ pipeline {
                     sh """
                         /usr/local/bin/oc login -u $OC_USER -p $OC_PASSWORD $OC_URL --insecure-skip-tls-verify
                         oc project $OC_PROJECT
+                        oc delete all --selector app=$IMAGE_NAME
+                        oc delete is $IMAGE_NAME
                     """
                     OC_TOKEN = sh(script: 'oc whoami -t', returnStdout: true)
                     OC_REGISTRY = sh(script: 'echo -n $(oc registry info)', returnStdout: true)
